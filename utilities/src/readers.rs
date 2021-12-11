@@ -3,12 +3,12 @@ use std::io::{BufRead, BufReader, Error, ErrorKind, Read};
 pub fn read_ints(input: impl Read) -> Result<Vec<i64>,Error> {
     let br = BufReader::new(input);
 
-    br.lines()
+    return br.lines()
         .map(|line| line.unwrap())
         .map(|line| line.trim().to_owned())
         .filter(|line| !line.is_empty())
         .map(|line| line.parse().map_err(|e| Error::new(ErrorKind::InvalidData, e)))
-        .collect()
+        .collect();
 }
 
 #[cfg(test)]
