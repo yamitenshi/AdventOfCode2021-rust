@@ -1,13 +1,23 @@
 use std::io::{BufRead, BufReader, Error, ErrorKind, Read};
 
-pub fn read_ints(input: impl Read) -> Result<Vec<i64>,Error> {
+fn read_all_non_blank_lines(input: impl Read) -> impl Iterator<Item=String> {
     let br = BufReader::new(input);
 
     return br.lines()
         .map(|line| line.unwrap())
         .map(|line| line.trim().to_owned())
-        .filter(|line| !line.is_empty())
+        .filter(|line| !line.is_empty());
+}
+
+pub fn read_ints(input: impl Read) -> Result<Vec<i64>,Error> {
+    return read_all_non_blank_lines(input)
         .map(|line| line.parse().map_err(|e| Error::new(ErrorKind::InvalidData, e)))
+        .collect();
+}
+
+pub fn read_strings(input: impl Read) -> Result<Vec<String>,Error> {
+    return read_all_non_blank_lines(input)
+        .map(|line| Ok(line))
         .collect();
 }
 
